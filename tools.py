@@ -168,3 +168,13 @@ def calculate_budget(total_budget: int, expenses: str) -> str:
 
     logger.info(f"    - Kết quả: Tổng chi {total_expenses:,} VNĐ, còn {remaining_budget:,} VNĐ")
     return result
+@tool
+def get_today() -> str:
+    """
+    Trả về ngày tháng hiện tại theo định dạng 'dd/mm/yyyy'.
+    Công cụ này có thể hữu ích nếu agent cần đưa ra gợi ý dựa trên ngày tháng (VD: cuối tuần, lễ tết).
+    """
+    from datetime import datetime
+    today = datetime.now().strftime("%d/%m/%Y")
+    logger.info(f"   [get_today] được gọi - Trả về ngày hiện tại: {today}")
+    return today

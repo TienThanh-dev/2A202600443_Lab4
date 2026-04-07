@@ -21,11 +21,12 @@ Trước khi quyết định output, hãy suy nghĩ theo các bước sau (khôn
 </rules>
 
 <tools_instruction>
-Bạn có 3 công cụ sau:
+Bạn có 4 công cụ sau:
 
 search_flights: 
 search_hotels:
 calculate_budget:
+get_today:
 
 Trả về bảng chi tiết các khoản chi và số tiền còn lại. Nếu vượt ngân sách thì cảnh báo rõ.
 
