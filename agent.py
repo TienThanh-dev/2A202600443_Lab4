@@ -9,10 +9,24 @@ from tools import search_flights, search_hotels, calculate_budget
 from dotenv import load_dotenv
 import os
 from test_auto import run_automated_tests
+import logging
+from datetime import datetime
+
 load_dotenv()
 
+# === CẤU HÌNH LOGGING ===
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("test_results.log", encoding="utf-8"),  # File log chung
+        logging.StreamHandler()  # Hiển thị ra console
+    ]
+)
+logger = logging.getLogger("TravelBuddy-Agent")
+
 # 1. Đọc System Prompt
-with open("system_prompt.xml", "r", encoding="utf-8") as f:
+with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read()
 
 # 2. Khai báo State
@@ -39,14 +53,24 @@ def agent_node(state: AgentState):
     if not isinstance(messages[0], SystemMessage):
         messages = [SystemMessage(content=SYSTEM_PROMPT)] + messages
 
+    # Log input message
+    user_message = messages[-1].content if hasattr(messages[-1], 'content') else str(messages[-1])
+    logger.info(f"Input từ user: {user_message}")
+
     response = llm_with_tools.invoke(messages)
 
-    # === LOGGING ===
+    # === LOGGING CHI TIẾT ===
     if response.tool_calls:
-        for tc in response.tool_calls:
-            print(f"Gọi tool: {tc['name']}({tc['args']})")
+        logger.warning(f"Agent quyết định gọi {len(response.tool_calls)} tool(s)")
+        for i, tc in enumerate(response.tool_calls, 1):
+            tool_name = tc['name']
+            tool_args = tc['args']
+            logger.warning(f"   [{i}] Tool: {tool_name}")
+            logger.warning(f"       Tham số: {tool_args}")
+            print(f"   [{i}] Gọi tool: {tool_name}({tool_args})")
     else:
-        print(f"Trả lời trực tiếp")
+        logger.info(f"Agent trả lời trực tiếp (không gọi tool)")
+        print(f"   Trả lời: {response.content[:100]}...")
 
     return {"messages": [response]}
 

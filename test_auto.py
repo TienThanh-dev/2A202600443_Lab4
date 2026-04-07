@@ -6,7 +6,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("travel_buddy_debug.log", encoding="utf-8"), # Ghi vào file
+        logging.FileHandler("test_results.log", encoding="utf-8"), # Ghi vào file
         logging.StreamHandler() # Vẫn hiển thị ra console để tiện theo dõi
     ]
 )
@@ -68,4 +68,4 @@ def run_automated_tests(graph_instance):
             
         logger.info("-" * 80)
 
-    logger.info("KIỂM THỬ HOÀN TẤT. Vui lòng kiểm tra file 'travel_buddy_test.log'.")
+    logger.info("KIỂM THỬ HOÀN TẤT. Vui lòng kiểm tra file 'test_results.log'.")

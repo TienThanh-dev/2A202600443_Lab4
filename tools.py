@@ -1,6 +1,8 @@
 from langchain_core.tools import tool
+import logging
 
-# =================================================================
+# Logger sẽ được config từ agent.py
+logger = logging.getLogger("TravelBuddy-Tools")
 # MOCK DATA – Dữ liệu giả lập hệ thống du lịch
 # Lưu ý: Giá cả có logic (VD: cuối tuần đắt hơn, hạng cao hơn đắt hơn)
 # Sinh viên cần đọc hiểu data để debug test cases.
@@ -66,14 +68,23 @@ def search_flights(origin: str, destination: str) -> str:
     Trả về danh sách chuyến bay với hãng, giờ bay, giá vé.
     Nếu không tìm thấy chuyến bay, trả về thông báo không có chuyến.
     """
+    # Log chi tiết
+    logger.info(f"    [search_flights] được gọi")
+    logger.info(f"    - Khởi hành: {origin}")
+    logger.info(f"    - Đích đến: {destination}")
+    
     for i in FLIGHTS_DB.keys():
         if i[0].lower() == origin.lower() and i[1].lower() == destination.lower():
             flights = FLIGHTS_DB[i]
+            logger.info(f"    -  Tìm thấy {len(flights)} chuyến bay")
             result = f"Các chuyến bay từ {origin} đến {destination}:\n"
-            for f in flights:
+            for idx, f in enumerate(flights, 1):
                 result += f"- {f['airline']}: {f['departure']} - {f['arrival']}, {f['class']}, {f['price']:,} VNĐ\n"
+                logger.debug(f"      Chuyến {idx}: {f['airline']} ({f['price']:,} VNĐ)")
+            logger.info(f"    - Kết quả: Trả về danh sách {len(flights)} chuyến bay")
             return result
 
+    logger.warning(f"    -  Không tìm thấy chuyến bay từ {origin} đến {destination}")
     return f"Không tìm thấy chuyến bay từ {origin} đến {destination}."
 
 
@@ -86,16 +97,27 @@ def search_hotels(city: str, max_price_per_night: int = 99999999) -> str:
     - max_price_per_night: giá tối đa mỗi đêm (VNĐ), mặc định không giới hạn
     Trả về danh sách khách sạn phù hợp với tên, số sao, giá, khu vực, rating.
     """
+    logger.info(f"   [search_hotels] được gọi")
+    logger.info(f"    - Thành phố: {city}")
+    logger.info(f"    - Giá tối đa: {max_price_per_night:,} VNĐ/đêm")
+    
     for i in HOTELS_DB.keys():
         if i.lower() == city.lower():
             hotels = HOTELS_DB[i]
             filtered_hotels = [h for h in hotels if h["price_per_night"] <= max_price_per_night]
             if not filtered_hotels:
+                logger.warning(f"    - Không tìm thấy khách sạn ở {city} với giá tối đa {max_price_per_night:,} VNĐ")
                 return f"Không tìm thấy khách sạn nào ở {city} với giá tối đa {max_price_per_night:,} VNĐ mỗi đêm."
+            logger.info(f"    - Tìm thấy {len(filtered_hotels)} khách sạn (từ {len(hotels)} tổng)")
             result = f"Các khách sạn ở {city} với giá tối đa {max_price_per_night:,} VNĐ mỗi đêm:\n"
-            for h in filtered_hotels:
+            for idx, h in enumerate(filtered_hotels, 1):
                 result += f"- {h['name']}: {h['stars']} sao, {h['area']}, rating {h['rating']}, {h['price_per_night']:,} VNĐ/đêm\n"
+                logger.debug(f"      [{idx}] {h['name']} - {h['price_per_night']:,} VNĐ")
+            logger.info(f"    - Kết quả: Trả về danh sách {len(filtered_hotels)} khách sạn")
             return result
+
+    logger.error(f"    - ❌ Thành phố {city} không có trong database")
+    return f"Không tìm thấy khách sạn nào ở {city}."
 
 @tool
 def calculate_budget(total_budget: int, expenses: str) -> str:
@@ -108,30 +130,26 @@ def calculate_budget(total_budget: int, expenses: str) -> str:
     Trả về bảng chi tiết các khoản chi và số tiền còn lại.
     Nếu vượt ngân sách, cảnh báo rõ ràng số tiền thiếu.
     """
-    # TODO: Sinh viên tự triển khai
-    # - Parse chuỗi expenses thành dict {tên: số_tiền}
-    # - Tính tổng chi phí
-    # - Tính số tiền còn lại = total_budget - tổng chi phí
-    # - Format bảng chi tiết:
-    #     Bảng chi phí:
-    #     - Vé máy bay: 890.000đ
-    #     - Khách sạn: 650.000đ
-    #     ---
-    #     Tổng chi: 1.540.000đ
-    #     Ngân sách: 5.000.000đ
-    #     Còn lại: 3.460.000đ
-    # - Nếu âm -> "Vượt ngân sách X đồng! Cần điều chỉnh."
-    # - Xử lý lỗi: nếu expenses format sai -> trả về thông báo lỗi rõ ràng
+    logger.info(f"   [calculate_budget] được gọi")
+    logger.info(f"    - Ngân sách tổng: {total_budget:,} VNĐ")
+    logger.info(f"    - Chuỗi chi phí: {expenses}")
+    
     dict_expenses = {}
     try:
         for item in expenses.split(","):
             name, cost = item.split(":")
             dict_expenses[name.strip()] = int(cost.strip())
-    except ValueError:
+        logger.info(f"    -  Parse chi phí thành công ({len(dict_expenses)} khoản)")
+    except ValueError as e:
+        logger.error(f"    -  Lỗi parse chi phí: {e}")
         return "Lỗi: Định dạng chi phí không hợp lệ. Vui lòng kiểm tra lại."
 
     total_expenses = sum(dict_expenses.values())
     remaining_budget = total_budget - total_expenses
+
+    # Log chi tiết từng khoản chi
+    for name, cost in dict_expenses.items():
+        logger.debug(f"      - {name}: {cost:,} VNĐ")
 
     # Format bảng chi tiết
     result = "Bảng chi phí:\n"
@@ -143,6 +161,10 @@ def calculate_budget(total_budget: int, expenses: str) -> str:
     result += f"Còn lại: {remaining_budget:,} VNĐ\n"
 
     if remaining_budget < 0:
+        logger.warning(f"    -  Vượt ngân sách {-remaining_budget:,} VNĐ!")
         result += f"Vượt ngân sách {-remaining_budget:,} VNĐ! Cần điều chỉnh."
+    else:
+        logger.info(f"    -  Ngân sách còn lại: {remaining_budget:,} VNĐ")
 
+    logger.info(f"    - Kết quả: Tổng chi {total_expenses:,} VNĐ, còn {remaining_budget:,} VNĐ")
     return result

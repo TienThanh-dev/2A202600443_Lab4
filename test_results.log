@@ -1,0 +1,135 @@
+2026-04-07 16:56:23,104 - INFO - ================================================================================
+2026-04-07 16:56:23,104 - INFO -                      BẮT ĐẦU KIỂM THỬ HỆ THỐNG TRAVELBUDDY                      
+2026-04-07 16:56:23,104 - INFO - ================================================================================
+2026-04-07 16:56:23,104 - INFO - ▶️ [Test 1] Direct Answer
+2026-04-07 16:56:23,108 - INFO -    Mô tả kỳ vọng: Agent chào hỏi, hỏi thêm về sở thích/ngân sách/thời gian. Không gọi tool nào.
+2026-04-07 16:56:23,108 - INFO -    User Input   : Xin chào! Tôi đang muốn đi du lịch nhưng chưa biết đi đâu.
+2026-04-07 16:56:23,119 - INFO - Input từ user: Xin chào! Tôi đang muốn đi du lịch nhưng chưa biết đi đâu.
+2026-04-07 16:56:26,282 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:26,303 - INFO - Agent trả lời trực tiếp (không gọi tool)
+2026-04-07 16:56:26,304 - INFO -    ✅ KẾT QUẢ: Chào bạn! Rất vui được giúp bạn lên kế hoạch chuyến đi. Để mình gợi ý phù hợp hơn, bạn có thể cho mình biết thêm một vài thông tin nhé:
+
+1. **Bạn sẽ xuất phát từ đâu?** (ví dụ: Hà Nội, Hồ Chí Minh, Đà Nẵng…)  
+2. **Bạn muốn đi trong bao nhiêu đêm?**  
+3. **Ngân sách tổng cộng của bạn (khoảng bao nhiêu VNĐ) để chi cho vé máy bay, khách sạn và các chi phí khác?**  
+4. **Bạn có sở thích đặc biệt nào không?** (biển, núi, ẩm thực, văn hoá, mua sắm, nghỉ dưỡng…)
+
+Cung cấp những thông tin này, mình sẽ nhanh chóng đưa ra đề xuất chuyến đi tuyệt vời cho bạn! 🌏✈️🏨
+2026-04-07 16:56:26,304 - INFO - --------------------------------------------------------------------------------
+2026-04-07 16:56:26,304 - INFO - ▶️ [Test 2] Single Tool Call
+2026-04-07 16:56:26,304 - INFO -    Mô tả kỳ vọng: Gọi search_flights('Hà Nội', 'Đà Nẵng'), liệt kê 4 chuyến bay.
+2026-04-07 16:56:26,304 - INFO -    User Input   : Tìm giúp tôi chuyến bay từ Hà Nội đi Đà Nẵng
+2026-04-07 16:56:26,315 - INFO - Input từ user: Tìm giúp tôi chuyến bay từ Hà Nội đi Đà Nẵng
+2026-04-07 16:56:28,595 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:28,603 - WARNING - Agent quyết định gọi 1 tool(s)
+2026-04-07 16:56:28,605 - WARNING -    [1] Tool: search_flights
+2026-04-07 16:56:28,610 - WARNING -        Tham số: {'origin': 'Hà Nội', 'destination': 'Đà Nẵng'}
+2026-04-07 16:56:28,649 - INFO -     [search_flights] được gọi
+2026-04-07 16:56:28,652 - INFO -     - Khởi hành: Hà Nội
+2026-04-07 16:56:28,654 - INFO -     - Đích đến: Đà Nẵng
+2026-04-07 16:56:28,654 - INFO -     -  Tìm thấy 4 chuyến bay
+2026-04-07 16:56:28,656 - INFO -     - Kết quả: Trả về danh sách 4 chuyến bay
+2026-04-07 16:56:28,659 - INFO - Input từ user: Các chuyến bay từ Hà Nội đến Đà Nẵng:
+- Vietnam Airlines: 06:00 - 07:20, economy, 1,450,000 VNĐ
+- Vietnam Airlines: 14:00 - 15:20, business, 2,800,000 VNĐ
+- VietJet Air: 08:30 - 09:50, economy, 890,000 VNĐ
+- Bamboo Airways: 11:00 - 12:20, economy, 1,200,000 VNĐ
+
+2026-04-07 16:56:31,857 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:31,861 - INFO - Agent trả lời trực tiếp (không gọi tool)
+2026-04-07 16:56:31,863 - INFO -    ✅ KẾT QUẢ: **Chuyến bay từ Hà Nội → Đà Nẵng**
+
+| Hãng hàng không | Giờ khởi hành – giờ hạ cánh | Hạng ghế | Giá vé |
+|----------------|----------------------------|----------|--------|
+| Vietnam Airlines | 06:00 – 07:20 | Economy | 1,450,000 VNĐ |
+| Vietnam Airlines | 14:00 – 15:20 | Business | 2,800,000 VNĐ |
+| VietJet Air | 08:30 – 09:50 | Economy | 890,000 VNĐ |
+| Bamboo Airways | 11:00 – 12:20 | Economy | 1,200,000 VNĐ |
+
+Bạn có thể lựa chọn theo thời gian bay và mức giá phù hợp. Nếu muốn biết thêm về khách sạn tại Đà Nẵng hoặc tính toán ngân sách cho chuyến đi, cứ thoải mái cho mình biết nhé!
+2026-04-07 16:56:31,867 - INFO - --------------------------------------------------------------------------------
+2026-04-07 16:56:31,868 - INFO - ▶️ [Test 3] Multi-Step Tool Chaining
+2026-04-07 16:56:31,870 - INFO -    Mô tả kỳ vọng: Agent tự chuỗi nhiều bước: 1. search_flights -> 2. search_hotels -> 3. calculate_budget. Tổng hợp thành gợi ý với bảng chi phí.
+2026-04-07 16:56:31,870 - INFO -    User Input   : Tôi ở Hà Nội, muốn đi Phú Quốc 2 đêm, budget 5 triệu. Tư vấn giúp!
+2026-04-07 16:56:31,870 - INFO - Input từ user: Tôi ở Hà Nội, muốn đi Phú Quốc 2 đêm, budget 5 triệu. Tư vấn giúp!
+2026-04-07 16:56:34,628 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:34,632 - WARNING - Agent quyết định gọi 1 tool(s)
+2026-04-07 16:56:34,632 - WARNING -    [1] Tool: search_flights
+2026-04-07 16:56:34,632 - WARNING -        Tham số: {'origin': 'Hà Nội', 'destination': 'Phú Quốc'}
+2026-04-07 16:56:34,639 - INFO -     [search_flights] được gọi
+2026-04-07 16:56:34,639 - INFO -     - Khởi hành: Hà Nội
+2026-04-07 16:56:34,639 - INFO -     - Đích đến: Phú Quốc
+2026-04-07 16:56:34,641 - INFO -     -  Tìm thấy 3 chuyến bay
+2026-04-07 16:56:34,641 - INFO -     - Kết quả: Trả về danh sách 3 chuyến bay
+2026-04-07 16:56:34,643 - INFO - Input từ user: Các chuyến bay từ Hà Nội đến Phú Quốc:
+- Vietnam Airlines: 07:00 - 09:15, economy, 2,100,000 VNĐ
+- VietJet Air: 10:00 - 12:15, economy, 1,350,000 VNĐ
+- VietJet Air: 16:00 - 18:15, economy, 1,100,000 VNĐ
+
+2026-04-07 16:56:35,608 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:35,616 - WARNING - Agent quyết định gọi 1 tool(s)
+2026-04-07 16:56:35,616 - WARNING -    [1] Tool: search_hotels
+2026-04-07 16:56:35,619 - WARNING -        Tham số: {'city': 'Phú Quốc', 'max_price_per_night': 1800000}
+2026-04-07 16:56:35,624 - INFO -    [search_hotels] được gọi
+2026-04-07 16:56:35,624 - INFO -     - Thành phố: Phú Quốc
+2026-04-07 16:56:35,624 - INFO -     - Giá tối đa: 1,800,000 VNĐ/đêm
+2026-04-07 16:56:35,624 - INFO -     - Tìm thấy 3 khách sạn (từ 4 tổng)
+2026-04-07 16:56:35,624 - INFO -     - Kết quả: Trả về danh sách 3 khách sạn
+2026-04-07 16:56:35,624 - INFO - Input từ user: Các khách sạn ở Phú Quốc với giá tối đa 1,800,000 VNĐ mỗi đêm:
+- Sol by Meliá: 4 sao, Bãi Trường, rating 4.2, 1,500,000 VNĐ/đêm
+- Lahana Resort: 3 sao, Dương Đông, rating 4.0, 800,000 VNĐ/đêm
+- 9Station Hostel: 2 sao, Dương Đông, rating 4.5, 200,000 VNĐ/đêm
+
+2026-04-07 16:56:37,615 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:37,618 - WARNING - Agent quyết định gọi 1 tool(s)
+2026-04-07 16:56:37,618 - WARNING -    [1] Tool: calculate_budget
+2026-04-07 16:56:37,618 - WARNING -        Tham số: {'expenses': 'vé_máy_bay:1100000,khách_sạn:1600000', 'total_budget': 5000000}
+2026-04-07 16:56:37,626 - INFO -    [calculate_budget] được gọi
+2026-04-07 16:56:37,628 - INFO -     - Ngân sách tổng: 5,000,000 VNĐ
+2026-04-07 16:56:37,628 - INFO -     - Chuỗi chi phí: vé_máy_bay:1100000,khách_sạn:1600000
+2026-04-07 16:56:37,629 - INFO -     -  Parse chi phí thành công (2 khoản)
+2026-04-07 16:56:37,629 - INFO -     -  Ngân sách còn lại: 2,300,000 VNĐ
+2026-04-07 16:56:37,629 - INFO -     - Kết quả: Tổng chi 2,700,000 VNĐ, còn 2,300,000 VNĐ
+2026-04-07 16:56:37,634 - INFO - Input từ user: Bảng chi phí:
+- vé_máy_bay: 1,100,000 VNĐ
+- khách_sạn: 1,600,000 VNĐ
+---
+Tổng chi: 2,700,000 VNĐ
+Ngân sách: 5,000,000 VNĐ
+Còn lại: 2,300,000 VNĐ
+
+2026-04-07 16:56:41,444 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:41,448 - INFO - Agent trả lời trực tiếp (không gọi tool)
+2026-04-07 16:56:41,448 - INFO -    ✅ KẾT QUẢ: **Chuyến bay:** VietJet Air, chuyến bay 16:00 – 18:15, giá 1,100,000 VNĐ. Lựa chọn này vì giá rẻ nhất, còn lại thời gian phù hợp cho chuyến đi cuối ngày.
+
+**Khách sạn:** Lahana Resort (3 sao), vị trí Dương Đông, rating 4.0, giá 800,000 VNĐ/đêm. Hai đêm sẽ tốn 1,600,000 VNĐ, phù hợp với ngân sách và vẫn có tiêu chuẩn dịch vụ ổn định.
+
+**Tổng chi phí ước tính:**  
+- Vé máy bay: 1,100,000 VNĐ  
+- Khách sạn (2 đêm): 1,600,000 VNĐ  
+**Tổng:** 2,700,000 VNĐ  
+**Còn lại trong ngân sách 5,000,000 VNĐ:** 2,300,000 VNĐ – đủ để chi cho ăn uống, di chuyển, vé tham quan và những hoạt động giải trí khác.
+
+**Gợi ý thêm:**  
+- Dùng phần ngân sách còn lại để thử hải sản tươi ở chợ Dương Đông, thuê xe máy (khoảng 150,000 VNĐ/ngày) để tự do khám phá các bãi biển nổi tiếng như Bai Dai, Bai Truong.  
+- Đặt tour tham quan đảo Hòn Thơm hoặc lặn ngắm san hô để trải nghiệm biển xanh độc đáo của Phú Quốc.  
+
+Chúc bạn có chuyến đi vui vẻ và đáng nhớ!
+2026-04-07 16:56:41,453 - INFO - --------------------------------------------------------------------------------
+2026-04-07 16:56:41,453 - INFO - ▶️ [Test 4] Missing Info
+2026-04-07 16:56:41,454 - INFO -    Mô tả kỳ vọng: Agent hỏi lại: thành phố nào? bao nhiêu đêm? ngân sách bao nhiêu? Không gọi tool vội.
+2026-04-07 16:56:41,454 - INFO -    User Input   : Tôi muốn đặt khách sạn
+2026-04-07 16:56:41,458 - INFO - Input từ user: Tôi muốn đặt khách sạn
+2026-04-07 16:56:43,642 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:43,646 - INFO - Agent trả lời trực tiếp (không gọi tool)
+2026-04-07 16:56:43,646 - INFO -    ✅ KẾT QUẢ: Bạn muốn đặt khách sạn ở thành phố nào? Bạn dự tính ở lại bao nhiêu đêm và ngân sách cho khách sạn mỗi đêm khoảng bao nhiêu (hoặc tổng ngân sách cho chuyến đi) để mình có thể tìm kiếm phù hợp nhất cho bạn nhé.
+2026-04-07 16:56:43,652 - INFO - --------------------------------------------------------------------------------
+2026-04-07 16:56:43,654 - INFO - ▶️ [Test 5] Guardrail
+2026-04-07 16:56:43,656 - INFO -    Mô tả kỳ vọng: Từ chối lịch sự, nói rằng chỉ hỗ trợ về du lịch.
+2026-04-07 16:56:43,657 - INFO -    User Input   : Giải giúp tôi bài tập lập trình Python về linked list
+2026-04-07 16:56:43,660 - INFO - Input từ user: Giải giúp tôi bài tập lập trình Python về linked list
+2026-04-07 16:56:45,307 - INFO - HTTP Request: POST https://ollama.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-07 16:56:45,309 - INFO - Agent trả lời trực tiếp (không gọi tool)
+2026-04-07 16:56:45,309 - INFO -    ✅ KẾT QUẢ: Xin lỗi, mình không thể hỗ trợ yêu cầu này được. Nếu bạn có câu hỏi về du lịch, đặt vé hay khách sạn, mình rất sẵn lòng giúp đỡ!
+2026-04-07 16:56:45,309 - INFO - --------------------------------------------------------------------------------
+2026-04-07 16:56:45,309 - INFO - KIỂM THỬ HOÀN TẤT. Vui lòng kiểm tra file 'test_results.log'.

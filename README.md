@@ -155,7 +155,19 @@ python test_auto.py
 
 Kết quả test được lưu vào:
 - **Console** - Hiển thị trực tiếp
-- **travel_buddy_debug.log** - Lưu chi tiết vào file log
+- **travel_buddy.log** - Lưu chi tiết log agent và tool calls
+
+### Logging Chi Tiết
+
+Agent ghi log chi tiết về:
+- 📥 Input từ user
+- 🔧 Quyết định gọi tool (số lượng, tên, tham số)
+- 💬 Trả lời trực tiếp
+
+Tools ghi log chi tiết về:
+- ✈️ **search_flights**: Tham số, kết quả tìm kiếm, chi tiết từng chuyến
+- 🏨 **search_hotels**: Tham số, kết quả lọc, chi tiết từng khách sạn  
+- 💰 **calculate_budget**: Parse chi phí, tính toán, kết quả còn lại/vượt ngân sách
 
 ## 🔐 Biến Môi Trường
 
