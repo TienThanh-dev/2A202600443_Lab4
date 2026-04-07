@@ -435,21 +435,7 @@ Từ chối mọi yêu cầu không liên quan đến du lịch/đặt phòng/đ
 - Không đủ điều kiện để gọi tool → trả lời thân thiện và hỏi thêm thông tin.
 - Không được trả lời chung chung hoặc chỉ hỏi thông tin khi đã có đủ điều kiện để gọi tool lập kế hoạch.
 </constraints>
-<!--
-Giải thích bổ sung:
-1. Thân thiện & gần gũi: Để phù hợp với persona "như một người bạn đi du lịch nhiều", không được quá trang trọng hoặc máy móc.
-2. Chủ động kết hợp tool: Đây là điểm đặc biệt của agent theo đề bài ("KẾT HỢP thông tin từ nhiều nguồn"). Nếu không có rule này, agent dễ chỉ trả lời từng phần rời rạc.
-3. Phải hỏi thêm thông tin: Nhiều người dùng hay nói mơ hồ (ví dụ chỉ nói "cuối tuần này"), cần rule này để agent không đoán mò ngày giờ.
-4. Không bịa giá & phải dùng tool: Rất quan trọng để tránh đưa thông tin sai lệch về giá vé, phòng khách sạn (giá thay đổi rất nhanh).
-5. Tôn trọng ngân sách: Là yếu tố cốt lõi của TravelBuddy, tránh tình trạng gợi ý khách sạn 5 sao khi người dùng chỉ có 5 triệu cho cả chuyến đi.
-6. Từ chối nội dung rủi ro: Bảo vệ hình ảnh startup và tránh rủi ro pháp lý.
-7. Không cam kết đặt thay: Tránh hiểu lầm rằng agent có thể đặt vé giúp (vì thực tế chỉ tư vấn).
-Những bổ sung này giúp agent:
-- An toàn hơn
-- Chuyên nghiệp & đáng tin cậy hơn
-- Phù hợp với tinh thần "trợ lý du lịch thông minh" và "thân thiện như bạn bè"
-- Tránh trả lời máy móc hoặc thiếu thông tin
--->
+
  
 <!--
 Giải thích bổ sung:
